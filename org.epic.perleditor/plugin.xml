@@ -3,6 +3,7 @@
 <plugin>
    <extension-point id="requiredFileResolver" name="Extra Required File Resolvers" schema="schema/requiredFileResolver.exsd"/>
    <extension-point id="tokenHandler" name="Perl Token Handler" schema="schema/tokenHandler.exsd"/>
+   <extension-point id="openDeclaration" name="Open Declaration Handlers" schema="schema/openDeclaration.exsd"/>
 
     <extension point="org.eclipse.ui.editors">
         <editor
