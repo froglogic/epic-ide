@@ -151,7 +151,7 @@ public class LocalLaunchConfigurationDelegate
                 MessageFormat.format(
                     "Could not translate path {0} into a Cygwin path.\n" +
                     "Make sure your Cygwin mounts are configured properly.",
-                    new String[] { getScriptPath(launch).toOSString() }),
+                    getScriptPath(launch).toOSString()),
                 null
                 ));
         }
@@ -178,7 +178,7 @@ public class LocalLaunchConfigurationDelegate
             return;
         }
 
-        StringBuffer buf = new StringBuffer("Starting Perl debugger:\n");
+        StringBuilder buf = new StringBuilder("Starting Perl debugger:\n");
         buf.append("Command line:\n");
         for (int i = 0; i < cmdParams.length; i++)
         {
@@ -320,23 +320,23 @@ public class LocalLaunchConfigurationDelegate
      */
     private String getTimeoutErrorMessage(IProcess process)
     {
-    	IConsole console = DebugUIPlugin.getDefault().getProcessConsoleManager().getConsole(process);
-    	if (console instanceof ProcessConsole)
-    	{
+        IConsole console = DebugUIPlugin.getDefault().getProcessConsoleManager().getConsole(process);
+        if (console instanceof ProcessConsole)
+        {
             String consoleContents = ((ProcessConsole) console).getDocument().get();
             if (consoleContents.indexOf("Use of uninitialized value in subroutine dereference at (null) line 1.") != -1 &&
                 consoleContents.indexOf("perl5db.pl did not return a true value.") != -1)
             {
                 return "Timed out while waiting for Perl debugger connection. " +
-                	"The most likely reason is a broken version of PathTools in your Perl installation. " + 
-                	"You can fix this problem manually by editing a single line in Cwd.pm, as suggested " + 
-                	"in EPIC bug report 2907155 at SourceForge.";
+                    "The most likely reason is a broken version of PathTools in your Perl installation. " + 
+                    "You can fix this problem manually by editing a single line in Cwd.pm, as suggested " + 
+                    "in EPIC bug report 2907155 at SourceForge.";
             }
-    	}
-    	return "Timed out while waiting for Perl debugger connection.";
-	}
+        }
+        return "Timed out while waiting for Perl debugger connection.";
+    }
 
-	private IProcess startPerlProcess(
+    private IProcess startPerlProcess(
         ILaunch launch, String processName, int debugPort) throws CoreException
     {        
         String[] cmdParams = createCommandLine(launch);        
@@ -406,7 +406,7 @@ public class LocalLaunchConfigurationDelegate
                 Status.OK,
                 MessageFormat.format(
                     "Working directory does not exist: {0}",
-                    new String[] { path.toString() }),
+                    path.toString()),
                 null
                 ));
     }

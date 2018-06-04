@@ -28,51 +28,51 @@ public class SourceParser
         "^=cut$\\r?\\n?",                  // match the =cut line
         Pattern.MULTILINE | Pattern.DOTALL);
 
-	public static final int DO_NOT_DELETE_COMMENT_POD = 0;
-	public static final int DELETE_COMMENT = 1;
-	public static final int DELETE_POD = 2;
+    public static final int DO_NOT_DELETE_COMMENT_POD = 0;
+    public static final int DELETE_COMMENT = 1;
+    public static final int DELETE_POD = 2;
 
-	public SourceParser()
+    public SourceParser()
     {
-	}
+    }
 
-	/**
-	 * Gets elements from sourcecode by using regular expressions.
-	 * 
-	 * @param document
-	 * @param regexp
-	 * @param preFix
-	 * @param postFix
-	 * @param deleteComments
-	 * @return
-	 */
-	public static List<SourceElement> getElements(
+    /**
+     * Gets elements from sourcecode by using regular expressions.
+     * 
+     * @param document
+     * @param regexp
+     * @param preFix
+     * @param postFix
+     * @param deleteComments
+     * @return
+     */
+    public static List<SourceElement> getElements(
         IDocument document,
         String regexp,
-		String preFix,
+        String preFix,
         String postFix,
         boolean deleteComments)
     {
-		return getElements(
+        return getElements(
             document.get(),
             regexp,
             preFix,
             postFix,
             deleteComments);
-	}
+    }
 
-	/**
-	 * Gets elements from sourcecode by using regular expressions.
-	 * 
-	 * @param text
-	 * @param regexp
-	 * @param preFix
-	 * @param postFix
-	 * @param deleteComments
-	 * @param posWordOnly
-	 *            (postioning for word-only or for complete line)
-	 * @return
-	 */
+    /**
+     * Gets elements from sourcecode by using regular expressions.
+     * 
+     * @param text
+     * @param regexp
+     * @param preFix
+     * @param postFix
+     * @param deleteComments
+     * @param posWordOnly
+     *            (postioning for word-only or for complete line)
+     * @return
+     */
     public static List<SourceElement> getElements(
         String text,
         String regexp,
@@ -102,7 +102,7 @@ public class SourceParser
         String text,
         String regexp,
         String preFix,
-    	String postFix,
+        String postFix,
         int flags)
     {
         text = blankPODAndComments(
@@ -121,14 +121,14 @@ public class SourceParser
             if (m.groupCount() > 0) { start = m.start(1); end = m.end(1); }
             else { start = m.start(); end = m.end(); }
             
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             buf.append(preFix);
             buf.append(text.substring(start, end));
             buf.append(postFix);
             results.add(new SourceElement(buf.toString(), start, end-start));
         }
         return results;           
-	}
+    }
     
     private static void blankCharRange(char[] text, int start, int end)
     {

@@ -1,12 +1,15 @@
 package org.epic.perleditor.editors.util;
 
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.ui.IEditorDescriptor;
 import org.epic.core.Constants;
 import org.epic.core.util.PerlExecutor;
@@ -39,7 +42,7 @@ public class PerlValidator extends PerlValidatorBase
         if (instance == null) instance = new PerlValidator();
         return instance;
     }
-	
+    
     /**
      * Validates source code of the specified resource (through "perl -c")
      * and appropriately updates problem markers on this and possibly also
@@ -52,41 +55,41 @@ public class PerlValidator extends PerlValidatorBase
      * @exception java.io.IOException
      *            if the source text of the resource could not be read
      */
-	public synchronized boolean validate(IResource resource)
+    public synchronized boolean validate(IResource resource)
         throws CoreException, IOException
     {
-		IEditorDescriptor defaultEditorDescriptor =
-			PerlEditorPlugin
-				.getDefault()
-				.getWorkbench()
-				.getEditorRegistry()
-				.getDefaultEditor(resource.getFullPath().toString());
+        IEditorDescriptor defaultEditorDescriptor =
+            PerlEditorPlugin
+                .getDefault()
+                .getWorkbench()
+                .getEditorRegistry()
+                .getDefaultEditor(resource.getFullPath().toString());
 
-		if (defaultEditorDescriptor == null) return false;
+        if (defaultEditorDescriptor == null) return false;
 
-		if (!defaultEditorDescriptor.getId().equals(Constants.PERL_EDITOR_ID)
-			|| resource.getFileExtension().equals(Constants.EMB_PERL_FILE_EXTENSION))
+        if (!defaultEditorDescriptor.getId().equals(Constants.PERL_EDITOR_ID)
+            || resource.getFileExtension().equals(Constants.EMB_PERL_FILE_EXTENSION))
         {
-			return false;
-		}
+            return false;
+        }
         
         // if workspace is out-of-sync with the file system:
         if (!resource.exists()) return false; 
 
-		validate(resource, readSourceFile(resource));
+        validate(resource, readSourceFile(resource));
         return true;
-	} 
+    } 
 
-    protected void addMarker(IResource resource, Map<String, Serializable> attributes)
+    protected void addMarker(IResource resource, Map<String, Object> attributes)
     {
         new MarkerUtil(resource).addMarker(attributes, Constants.PROBLEM_MARKER);
     }
-    
+
     protected void clearAllUsedMarkers(IResource resource)
     {
         new MarkerUtil(resource).clearAllUsedFlags(Constants.PROBLEM_MARKER);
     }
-    
+
     protected IResource getErrorResource(ParsedErrorLine line, IResource resource)
     {
         IResource ret = super.getErrorResource(line, resource);
@@ -110,7 +113,7 @@ public class PerlValidator extends PerlValidatorBase
         // we shall still attach the marker to the currently validated resource
         return errorResource != null ? errorResource : resource;
     }
-    
+
     protected List<String> getPerlArgs()
     {
         List<String> args = super.getPerlArgs();        
@@ -129,14 +132,14 @@ public class PerlValidator extends PerlValidatorBase
     
         return args;
     }
-    
+
     protected boolean isProblemMarkerPresent(
         ParsedErrorLine line, IResource resource)
     {
         return new MarkerUtil(resource).isMarkerPresent(
             Constants.PROBLEM_MARKER, line.getLineNumber(), line.getMessage(), true);
     }
-    
+
     protected void removeUnusedMarkers(IResource resource)
     {
         MarkerUtil util = new MarkerUtil(resource);

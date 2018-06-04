@@ -4,7 +4,7 @@ import java.util.*;
 
 import org.eclipse.core.runtime.*;
 import org.eclipse.jface.text.*;
-import org.eclipse.jface.util.ListenerList;
+import org.eclipse.core.runtime.ListenerList;
 import org.epic.core.parser.*;
 import org.epic.perleditor.PerlEditorPlugin;
 import org.epic.perleditor.editors.PartitionTypes;
@@ -19,7 +19,7 @@ import org.epic.perleditor.editors.PerlPartitioner;
  */
 public class SourceFile
 {
-    private final ListenerList listeners = new ListenerList(1);
+    private final ListenerList listeners = new ListenerList();
     private final ILog log;
     private final IDocument doc;
     private List<PODComment> pods;
@@ -188,6 +188,7 @@ public class SourceFile
         private int type;
         private int blockLevel;
         private List<ITokenHandler> tokenHandlers;
+        private boolean afterEnd;
         
         private Stack<Package> pkgStack;
         private Stack<Subroutine> subStack;
@@ -217,7 +218,7 @@ public class SourceFile
         
         public boolean hasMoreTokens()
         {
-            return tIndex < tokenCount;
+            return tIndex < tokenCount && !afterEnd;
         }
         
         public void processToken() throws BadLocationException
@@ -228,6 +229,12 @@ public class SourceFile
             for (ITokenHandler handler: tokenHandlers) {
                 handler.handleToken(tIndex);
             }
+            if (this.type == PerlTokenTypes.END)
+            {
+                afterEnd = true;
+                return;
+            }
+            
             updateBlockLevel();
             updatePackageState();
             updateSubState();

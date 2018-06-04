@@ -4,6 +4,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
+import org.epic.perleditor.Logger;
+
+import static org.epic.perleditor.Logger.INFO;
 
 import java.io.*;
 import java.util.*;
@@ -36,19 +39,19 @@ public class XMLUtilities
                 Document doc = builder.build(file);
 
                 Element root = doc.getRootElement();
-                List entries = root.getChildren("ignoredpathentry");
-                Iterator iter = entries.iterator();
+                List<Element> entries = root.getChildren("ignoredpathentry");
+                Iterator<Element> iter = entries.iterator();
 
                 while (iter.hasNext())
                 {
-                    Element element = (Element) iter.next();
+                    Element element = iter.next();
                     ignores.add(element.getAttributeValue("path"));
                 }
             }
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Logger.logException(e);
         }
 
         return ignores.toArray(new String[ignores.size()]);
@@ -109,7 +112,7 @@ public class XMLUtilities
                         catch (CoreException e)
                         {
                             path = null;
-                            e.printStackTrace();
+                            Logger.log(INFO, "", e);
                         }
                     }
 
@@ -122,7 +125,7 @@ public class XMLUtilities
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Logger.logException(e);
         }
 
         return includes.toArray(new String[includes.size()]);

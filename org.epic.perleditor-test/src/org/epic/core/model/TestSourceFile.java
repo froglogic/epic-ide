@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.IDocument;
 import org.epic.perl.editor.test.BaseTestCase;
 import org.epic.perl.editor.test.Log;
-import org.epic.perleditor.editors.PartitionTypes;
 import org.epic.perleditor.editors.PerlPartitioner;
 
 public class TestSourceFile extends BaseTestCase
@@ -35,7 +33,7 @@ public class TestSourceFile extends BaseTestCase
         SourceFile src = new SourceFile(new Log(), doc);
         src.parse();
         
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (Iterator<Package> i = src.getPackages().iterator(); i.hasNext();)
         {
             Package pkg = i.next();

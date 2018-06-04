@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.epic.feature.main_0.7.24281.jar" id="org.epic.feature.main" version="0.7.24281">
+   <feature url="features/org.epic.feature.main_0.7.5.jar" id="org.epic.feature.main" version="0.7.5">
       <category name="org.epic.update.site"/>
    </feature>
    <category-def name="org.epic.update.site" label="EPIC Perl Editor (froglogic)"/>
