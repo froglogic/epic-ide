@@ -2648,7 +2648,7 @@ $smtp-&gt;[content assist]</programlisting>
       <para>To check if a regular expression is valid, press the <guiicon>Run
       <inlinemediaobject>
           <imageobject>
-            <imagedata fileref="images/run.gif" format="GIF" />
+            <imagedata fileref="images/run.png" format="PNG" />
           </imageobject>
         </inlinemediaobject></guiicon> icon. If the regular expression matches
       the text, it will be signaled by a green icon. If the regular expression
